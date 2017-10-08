@@ -1,0 +1,58 @@
+/*后台公用样式*/
+
+*{box-sizing:border-box;}
+
+.clear{ height: 1px; width: 100%; clear: both; line-height: 1px;}
+
+.login {background: url(../images/login-bg.png) #56bc94;}
+.login .login-title {color: #fff;text-align: center;font-size: 20px;margin-top: 200px;}
+.login .login-form {max-width: 450px;margin: 10px auto;position: relative;left: -50px;color: #fff;}
+.login .login-form .captcha {width: 140px;height: 38px;}
+.login .login-form input {background-color: rgba(255, 255, 255, 0.3);border: 1px solid rgba(255, 255, 255, 0.3);color: #fff;}
+.login .login-form button {width: 100%;background-color: #048f74;}
+
+.logo {color: #e2e2e2; font-size: 24px; line-height: 65px; padding-left: 20px;}
+
+.header {background-color: #393D49;}
+.header .user-action {position: absolute;right: 15px;top: 25px;}
+.header .user-action a {color: #e2e2e2;padding: 0 10px;}
+
+.a_class{position:absolute;top:0;right:0;padding:0 10px!important}
+.a_class i{font-size:16px!important}
+
+.footer {line-height: 44px;}
+.footer div p{ float: left;}
+.footer div p#status{float: right; color: #F00; font-size: 16px;}
+
+.layui-body {left: 210px;}
+.layui-side {top: 60px;}
+.layui-tab-title > li > a {display: block;}
+.layui-btn-normal {background: #4caf50;}
+.layui-btn-danger {background: #e90d24;}
+
+.form-container {max-width:900px;}
+
+/*分页*/
+.pagination {}
+.pagination li {display: inline-block;margin-right: -1px;padding: 5px;border: 1px solid #e2e2e2;min-width: 20px;text-align: center;}
+.pagination li.active {background: #009688;color: #fff;border: 1px solid #009688;}
+.pagination li a {display: block;text-align: center;}
+
+/**
+ * 分类样式表
+ */
+.category_list{ border:#E6E6E6 solid 1px; padding:2px; border-radius: 3px;}
+.category_list a{ display: block; font-size: 14px; height: 36px; line-height: 36px; padding: 0 15px; }
+.category_list a:hover{ color: #5FB878;}
+.category_list a.on{ background: #5FB878; color: #FFF;}
+
+#splitPage{ text-align: right;}
+th.tc{text-align:center; width: 1%;}
+.rightBtn{ float: right; padding-top: 4px;}
+
+.images_list{ display: inline-block;}
+.images_list li{ height:100px; margin-bottom: 5px; margin-right: 5px; float: left; position: relative;}
+.images_list li img{ height:100px;}
+.images_list li a{ position: absolute; top:3px; right:3px; display: none; padding: 3px; background: #F00; color:#FFF; font-size: 12px; cursor: pointer;}
+.images_list li:hover a{ display:block;}
+

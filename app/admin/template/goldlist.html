@@ -1,0 +1,75 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li class="layui-this">会员积分列表</li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<h3 style="color:#F00">
+					剩余积分：{$total?$total:0}；　总共充值：{$total_in?$total_in:0}；　共消费：{$total_out}　
+					<a href="#" data-userid="{$item.id}" data-usermobile="{$item.mobile}" class="layui-btn layui-btn-normal layui-btn-mini chongzhi">立即充值</a>
+				</h3>
+				<table class="layui-table">
+					<thead>
+					<tr>
+						<th class='tc' nowrap><a href="#" name="top_checkbox" data-for="ids">选择</a></th>
+						<th>消费类型</th>
+						<th>积分</th>
+						<th>时间</th>
+						<th>备注</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $list as $k=>$v}
+					<tr>
+						<td align="center"><input type="checkbox" name="ids" value="{$v.id}" title="选择"></td>
+						<td>
+
+						{if $v['gold_type']==1}
+							<span style="color:#00F">充值</span>
+						{else}
+							<span style="color:#00F">消费</span>
+						{/if}
+						</td>
+						<td>{$v.gold}</td>
+						<td>{date('Y-m-d H:i:s',$v['add_time'])}</td>
+						<td>{$v.content}</td>
+					</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+.chongzhi_html{ padding:20px;}
+.chongzhi_html td{ padding: 5px; text-align: right;}
+</style>
+
+<script type="text/javascript">
+layui.use('layer', function(){
+	var $ = layui.jquery,
+	layer = layui.layer;
+
+	var openPop = function(html){
+		layer.open({
+			type: 1,
+			content: html
+		});
+	};
+
+	layer.ready(function(){
+		$('.chongzhi').click(function(){
+			var o=$(this),
+				url = "{:url('user/add_gold')}";
+			openPop('<div class="chongzhi_html"><form class="layui-form form-container" action="'+url+'" method="post"><table><tr><td>充值给</td><td style="text-align:left;">'+o.data('usermobile')+'<input type="hidden" name="user_id" value="'+o.data('userid')+'"></td></tr><tr><td>充值积分</td><td><input type="number" name="gold" value="" required lay-verify="required" placeholder="请输入积分数量" class="layui-input"></td></tr><tr><td valign="top">备注</td><td><textarea name="content" placeholder="在此可输入备注信息" class="layui-textarea"></textarea></td></tr><tr><td></td><td style="text-align:left;"><button type="submit" class="layui-btn">确定增加</button></td></tr></table></form></div>');
+		});
+	});
+
+});
+</script>
+{include inc_foot.html}

@@ -1,0 +1,128 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li class="layui-this"><a href="{:url('content/category',['pid'=>$pid])}">{$pid_item.name}分类管理</a></li>
+			<li class=""><a href="#" id="add_category">添加分类</a></li>
+		</ul>
+
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				{if $leveldata}
+				<p>
+					<a href="{:url('content/category',['pid'=>$pid])}">{$pid_item.name}</a>
+				{foreach $leveldata as $k=>$v}
+					﹥ <a href="{:url('content/category',['pid'=>$pid,'fid'=>$v['id']])}">{$v.name}</a>
+				{/foreach}
+				</p>
+				{/if}
+
+				<table class="layui-table">
+					<thead>
+					<tr>
+						<th style="width: 30px;">ID</th>
+						<th>分类名称</th>
+						<th>备注</th>
+						<th width="1%" style="text-align:center;">操作</th>
+					</tr>
+					</thead>
+
+					<tbody>
+					{foreach $list as $k=>$v}
+					<tr>
+						<td>{$v.id}</td>
+						<td><a href="{:url('content/category',['pid'=>$pid,'fid'=>$v['id']])}" title="点击进入{$v.name}子分类">{$v.name}</a>{if $v['sub_number']>0} <span title='有{$v.sub_number}个子分类'>（{$v.sub_number}）</span>{/if}</td>
+						<td>{$v.content}</td>
+						<td align="right" nowrap>
+							<a href="#" class="layui-btn layui-btn-mini edit_category" data-id="{$v.id}" data-content="{$v.content}" data-thumb="{$v.thumb}" data-name="{$v.name}">修改分类</a>
+							<a href="#" data-url="{:url('content/category_move',['action'=>'up','pid'=>$pid,'fid'=>$v['fid'],'id'=>$v['id']])}" class="layui-btn layui-btn-normal layui-btn-mini ajax-link">向上</a>
+							<a href="#" data-url="{:url('content/category_move',['action'=>'down','pid'=>$pid,'fid'=>$v['fid'],'id'=>$v['id']])}" class="layui-btn layui-btn-normal layui-btn-mini ajax-link">向下</a>
+							<a href="#" data-url="{:url('content/category_del',['pid'=>$pid,'fid'=>$v['fid'],'id'=>$v['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+						</td>
+					</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+<style type="text/css">
+.hid_form{ padding:10px;}
+.hid_form form{ padding-right: 2px;}
+.hid_form input{width:340px; padding:10px; margin:0; margin-bottom: 5px;}
+.hid_form input#thumb{width:221px;}
+.hid_form textarea{width:340px; padding:10px; height:200px; margin-bottom: 5px;}
+.hid_form p{padding:10px;}
+.hid_form button{display: none;}
+</style>
+<div id="addcate" class="hid_form" style="display: none;">
+
+	<form class="layui-form" action="{:url('content/category_save',['pid'=>$pid,'fid'=>$fid])}" method="post">
+		<textarea name="category_names" placeholder="请输入分类名称"></textarea>
+		<p>每行可以录入一个分类名称。</p>
+		<button class="layui-btn" lay-submit lay-filter="*" id="btn_addcategory">添加</button>
+		<button class="layui-btn" lay-submit lay-filter="*">保存</button>
+	</form>
+
+</div>
+
+<div id="editcate" class="hid_form" style="display: none;">
+	<form id="edit_form" class='layui-form' action="{:url('content/category_save1',['pid'=>$pid,'fid'=>$fid])}" method="post">
+		<input type="hidden" name="id" id="id" value="">
+		<li><input type="input" name="name" id="name" placeholder="请输入分类名称"></li>
+		<li>
+			<input type="input" name="thumb" id="thumb" value="" placeholder="点击上传缩略图">
+			<input type="file" name="file" class="layui-upload-file">
+		</li>
+		<li><textarea name="content" class="content" placeholder="备注"></textarea></li>
+		<button class="layui-btn" lay-submit lay-filter="*" id="btn_editcategory">保存</button>
+	</form>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+$(function(){
+	$('body').on('click','#add_category',function(){//批量增加分类
+		var layer = layui.layer;
+		layer.open({
+			type:1,
+			title:'添加分类',
+			resize:false,
+			btn: ['确定', '取消'],
+			yes: function(index, layero){
+				$('#btn_addcategory').click();
+				layer.close(index);
+			},
+			content:$('#addcate')
+		});
+	}).on('click','.edit_category',function(){//修改分类
+		var layer = layui.layer;
+		
+		
+		$('#edit_form #id').val($(this).data('id'));
+		$('#edit_form #name').val($(this).data('name'));
+		$('#edit_form #thumb').val($(this).data('thumb'));
+		$('#edit_form .content').val($(this).data('content'));
+
+		layer.open({
+			type:1,
+			title:'修改分类',
+			resize:false,
+			btn: ['确定', '取消'],
+			yes: function(index, layero){
+				$('#btn_editcategory').click();
+				layer.close(index);
+			},
+			content:$('#editcate')
+		});
+	});
+});
+</script>
+{include inc_foot.html}

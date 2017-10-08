@@ -1,0 +1,116 @@
+{include inc_top.html}
+{include inc_left.html}
+<script type="text/javascript" charset="utf-8">
+$(function () {
+    //饼状图
+    $('#room_pie').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: '会员概况'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                },
+                events:{
+
+                        click: function(e) {
+                        		 location.href = e.point.url;
+
+
+                        }
+
+                },
+
+            }
+        },
+
+
+        series: [{
+            type: 'pie',
+            name: '概况',
+            data: [
+            		{foreach $num as $k => $v}
+            			{if $i==sizeof($num)}
+            				{name:'{$k}({$num[$k][0]})',y:{$num[$k][0]},url:'/admin/user/index'}
+            			{elseif $i++}
+            				{name:'{$k}({$num[$k][0]})',y:{$num[$k][0]},url:'/admin/user/index'},
+   						{/if}
+               		{/foreach}
+            ]
+        }]
+    });
+ $('#lanmu').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: '栏目概况'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            series: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                events: {
+                   	click: function(e) {
+                    	 location.href = e.point.url;
+                   	}
+                },
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    // format: '{point.name}'
+                     formatter: function() {
+                        if (this.percentage > 0)
+                            return '<b>'+this.point.name+'</b>:'+this.point.percentage.toFixed(1)+"%";// 这里进行判断
+                    }
+                }
+            }
+        },
+        series: [{
+            name: '栏目概况',
+            data: [
+            	{foreach $column as $k=>$v}
+            	{if $j == sizeof($column)}
+            		{name:'{$v.name}({$v.num})',y:{$v.num},url:'/admin/content/index?pid={$v.id}'}
+            	{elseif $j++}
+            		{name:'{$v.name}({$v.num})',y:{$v.num},url:'/admin/content/index?pid={$v.id}'},
+            	{/if}
+            	{/foreach}
+            ]
+        }]
+    });
+
+
+
+  });
+
+  </script>
+<div class="layui-body">
+ 	 <div id="room_pie" style="min-width:800px;height:400px"></div>
+ 	 <div id="lanmu" style="min-width:800px;height:400px"></div>
+</div>
+{include inc_foot.html}

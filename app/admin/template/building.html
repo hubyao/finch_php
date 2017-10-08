@@ -1,0 +1,85 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li class="layui-this">房源管理</li>
+			<li><a href="{:url('building/add',['id'=>0])}">添加房源</a></li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<table class="layui-table">
+					<thead>
+					<tr>
+						<th style="width: 30px;">ID</th>
+						<th>楼盘/开发商</th>
+						<th>售价</th>
+						<th>户型</th>
+						<th>状态</th>
+						<th>浏览量</th>
+						<th width="1%">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $list as $k=>$v}
+					<tr>
+						<td align="center">{$v.id}</td>
+						<td nowrap><span id='p_{$v.id}'>{$v.project}</span><br><small>{$v.author}</small></td>
+						<td nowrap>均价：{$v.price} / ㎡</td>
+						<td class='house_list'>{if $v['house']}
+								{foreach $v['house'] as $k1=>$v1}
+								<span {if $v1['is_hot']} class='is_hot' title='热销户型'{else} title="普通户型"{/if} onclick="location='{:url('building/house',['bid'=>$v['id'],'id'=>$v1['id']])}';">{$v1.title}<i data-url="{:url('building/delete',['flag'=>'house','id'=>$v1['id']])}" class="ajax-delete" title="确定要删除户型{$v1.title}？">×</i></span>
+								{/foreach}
+							{/if}
+							<a class="red" href="{:url('building/house',['bid'=>$v['id']])}" title="增加户型">+</a>
+						</td>
+						<td nowrap>{$v.status}</td>
+						<td>{$v.viewnum}</td>
+						<td nowrap>
+							<a href="{:url('building/add',['id'=>$v['id']])}" class="layui-btn layui-btn-mini edit_category">编辑</a>
+							<a href="#" data-url="{:url('building/delete',['flag'=>'building','id'=>$v['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete" title="确定要删除房源{$v.project}？">删除</a>
+						</td>
+					</tr>
+					{/foreach}
+					</tbody>
+				</table>
+				{if $pageurl}
+				<div id="splitPage"></div>
+				<script type="text/javascript">
+				layui.use(['laypage', 'layer'], function(){
+					var laypage = layui.laypage,
+						layer = layui.layer;
+					laypage({
+						cont: 'splitPage',
+						pages: {$pageurl.max},//总页数
+						curr: {$pageurl.now},//当前页
+						jump: function(obj,first){//点击页码出发的事件
+							if(first!=true){//是否首次进入页面
+								var url = '{$pageurl.url}'.replace('{page}',obj.curr);//把当前页码转为链接URL
+								window.location.href = url;
+							}
+						}
+					});
+				});
+				</script>
+				{/if}
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+.num_edit{
+	float:right;
+	margin-right:10px;
+	cursor: pointer;
+}
+small{ color:#AAA;}
+.tableBasic tr{ text-align: center;}
+.house_list{ text-align: left; padding-bottom:2px;}
+.house_list span,.house_list a{ padding:3px 6px; display: block; background: #EAF5FC; float: left; margin-right:3px; color: #000; position: relative; cursor: pointer; margin-bottom: 3px; font-size: 12px; }
+.house_list span.is_hot{ background: #FFD395; }
+.house_list span i{ position: absolute; right: 1px; top: 1px; display: none; width: 12px; height: 12px; line-height: 12px; text-align: center; background: #F00; color: #FFF; border-radius: 50%; cursor: pointer; }
+.house_list span:hover i{ display: block; }
+</style>
+{include inc_foot.html}

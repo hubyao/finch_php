@@ -1,0 +1,76 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li><a href="{:url('user/index')}">会员中心</a></li>
+			<li> <a href="{:url('user/edit')}">添加会员</a></li>
+			<li><a class="layui-this">会员等级管理</a></li>
+
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<table class="layui-table">
+				<div style="background:#4caf50;width:90px;height:25px;text-align:center;border-radius:5px;line-height:25px"><a href="javascript:;" style="color:#FFF;" class="level_add">添加会员等级</a></div>
+					<thead>
+					<tr>
+						<th>ID</th>
+						<th>会员等级名称</th>
+						<th>折扣优惠</th>
+						<th class="tc">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $list as $k=>$v}
+					<tr>
+						<td>{$v.id}</td>
+						<td>{$v.name}</td>
+						<td>{$v.privilege}</td>
+						<td nowrap>
+							<a href="#" data-id="{$v.id}" data-name="{$v.name}" class="layui-btn layui-btn-normal layui-btn-mini level_edit ">修改</a>
+							<a href="#"  data-url="{:url('user/level_del',['id'=>$v['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+						</td>
+					</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+.chongzhi_html{ padding:20px;}
+.chongzhi_html td{ padding: 5px; text-align: right;}
+</style>
+
+<script type="text/javascript">
+layui.use('layer', function(){
+	var $ = layui.jquery,
+	layer = layui.layer;
+
+	var openPop = function(html){
+		layer.open({
+			type: 1,
+			content: html
+		});
+	};
+
+	layer.ready(function(){
+		$('.level_edit').click(function(){
+			var o=$(this),
+				url = "{:url('user/level_edit')}";
+			openPop('<div class="chongzhi_html"><form class="layui-form form-container" action="'+url+'" method="post"><table><tr><td>ID</td><td style="text-align:left;">'+o.data('id')+'<input type="hidden" name="id" value="'+o.data('id')+'"></td></tr><tr><td>会员等级名称</td><td><input type="text" name="name" placeholder="'+o.data('name')+'" class="layui-input"></td></tr><tr><td>折扣优惠</td><td><input type="number" name="privilege" value="" required lay-verify="required" placeholder="请输入折扣优惠" class="layui-input"></td></tr><tr><td></td><td style="text-align:left;"><button type="submit" class="layui-btn">确定修改</button></td></tr></table></form></div>');
+		});
+
+		$('.level_add').click(function(){
+			var o=$(this),
+				url = "{:url('user/level_add')}";
+			openPop('<div class="chongzhi_html"><form class="layui-form form-container" action="'+url+'" method="post"><table><tr><td>会员等级名称</td><td><input type="text" name="name" placeholder="请输入会员等级名称" class="layui-input"></td></tr><tr><td>折扣优惠</td><td><input type="number" name="privilege" required lay-verify="required" placeholder="请输入折扣优惠" class="layui-input"></td></tr><tr><td></td><td style="text-align:left;"><button type="submit" class="layui-btn">确定</button></td></tr></table></form></div>');
+		});
+	});
+
+
+});
+</script>
+{include inc_foot.html}

@@ -1,0 +1,3 @@
+2017-09-18 09:12:26 | ::1 | /index.php/user/login.html |default应用里:controller\user_controller.php不存在
+2017-09-18 09:26:05 | ::1 | /index.php |E:\finch_81\app\default\template\\index.html 模板不存在
+2017-09-18 09:38:33 | ::1 | /index.php |PDO连接错误信息：SQLSTATE[HY000] [1049] Unknown database 'finch'

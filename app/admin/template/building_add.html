@@ -1,0 +1,404 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li class=""><a href="{:url('building')}">房源管理</a></li>
+			<li class="layui-this">{$id?'更新房源':'添加房源'}</li>
+			{if $id}<li><a href="{:url('building/house',['bid'=>$id])}">增加户型</a></li>{/if}
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+			<form class="layui-form form-container" action="{:url('building/save')}" method="post">
+				<input type="hidden" name="id" value="{$id}" id="id">
+				<div class="layui-form-item">
+					<label class="layui-form-label">项目名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="project" value="{$item['project']}" lay-verify="required" placeholder="请输入项目名称" class="layui-input" id="project">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">开发商</label>
+					<div class="layui-input-block">
+						<select name="kaifashang_id">
+							{foreach $kaifashang as $k=>$v}
+							<option value="{$v.id}"{if $v['id']==$item['kaifashang_id']} selected{/if}>{$v.kaifashangmingcheng}</option>
+							{/foreach}
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">所属商圈</label>
+					<div class="layui-input-block">
+						<select name="shangquan_id">
+							{foreach $shangquan as $k=>$v}
+							<option value="{$v.id}"{if $v['id']==$item['shangquan_id']} selected{/if}>{$v.quyu}-{$v.shangquanmingcheng}</option>
+							{/foreach}
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域</label>
+					<div class="layui-input-block">
+						<div class="layui-input-inline">
+							<select name="province" lay-filter="province">
+								<option value="">请选择省</option>
+							</select>
+						</div>
+						<div class="layui-input-inline" style="display: none;">
+							<select name="city" lay-filter="city">
+								<option value="">请选择市</option>
+							</select>
+						</div>
+						<div class="layui-input-inline" style="display: none;">
+							<select name="area" lay-filter="area">
+								<option value="">请选择县/区</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">详细位置</label>
+					<div class="layui-input-block">
+						<input type="text" name="location" id="location" value="{$item['location']}" lay-verify="required" placeholder="请输入详细位置" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">全景链接</label>
+					<div class="layui-input-block">
+						<input type="text" name="vr_link" id="vr_link" value="{$item['vr_link']}" placeholder="请输入全景链接，如果有" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">售楼部电话</label>
+					<div class="layui-input-block">
+						<input type="text" name="telphone" value="{$item['telphone']}" class="layui-input layui-input-inline" id="telphone" placeholder="请输入联系电话">
+						<div class="layui-form-mid layui-word-aux"></div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">参考均价</label>
+					<div class="layui-input-block">
+						<input type="text" name="price" value="{$item['price']}" class="layui-input layui-input-inline" id="price" placeholder="请输入参考价格">
+						<div class="layui-form-mid layui-word-aux">元 / ㎡</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">最低总价</label>
+					<div class="layui-input-block">
+						<input type="text" name="min_price" value="{$item['min_price']}" class="layui-input layui-input-inline" id="min_price" placeholder="最低的总体价格">
+						<div class="layui-form-mid layui-word-aux">万元</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">税费补贴</label>
+					<div class="layui-input-block">
+						<input type="text" name="subsidy" value="{$item['subsidy']}" class="layui-input layui-input-inline" id="subsidy" placeholder="请输入税费补贴，如果有">
+						<div class="layui-form-mid layui-word-aux">元</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">规划面积</label>
+					<div class="layui-input-block">
+						<input type="text" name="planning_area" value="{$item['planning_area']}" class="layui-input layui-input-inline" id="planning_area" placeholder="请输入规划面积">
+						<div class="layui-form-mid layui-word-aux">㎡</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">建筑面积</label>
+					<div class="layui-input-block">
+						<input type="text" name="building_area" value="{$item['building_area']}" class="layui-input layui-input-inline" id="building_area" placeholder="请输入建筑面积">
+						<div class="layui-form-mid layui-word-aux">㎡</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">封面图</label>
+					<div class="layui-input-block">
+						<input type="text" name="thumb" value="{$item['thumb']}" class="layui-input layui-input-inline" id="thumb" lay-verify="required">
+						<input type="file" name="file" data-for="thumb" class="layui-upload-file">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">楼盘状态</label>
+					<div class="layui-input-block">
+						<input type="radio" name="status" value="0"{$item['status']==0?' checked':''} title="即将开盘">
+						<input type="radio" name="status" value="1"{$item['status']==1?' checked':''} title="在售">
+						<input type="radio" name="status" value="2"{$item['status']==2?' checked':''} title="尾盘特卖">
+						<input type="radio" name="status" value="3"{$item['status']==3?' checked':''} title="售罄">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">物业类型</label>
+					<div class="layui-input-block">
+						<input type="radio" name="house_type" value="0"{$item['house_type']==0?' checked':''} title="住宅">
+						<input type="radio" name="house_type" value="1"{$item['house_type']==1?' checked':''} title="别墅">
+						<input type="radio" name="house_type" value="2"{$item['house_type']==2?' checked':''} title="写字楼">
+						<input type="radio" name="house_type" value="3"{$item['house_type']==3?' checked':''} title="两限房">
+						<input type="radio" name="house_type" value="4"{$item['house_type']==4?' checked':''} title="公租房">
+						<input type="radio" name="house_type" value="5"{$item['house_type']==5?' checked':''} title="安居房">
+						<input type="radio" name="house_type" value="6"{$item['house_type']==6?' checked':''} title="综合体">
+						<input type="radio" name="house_type" value="7"{$item['house_type']==7?' checked':''} title="商铺">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">建筑类型</label>
+					<div class="layui-input-block">
+						<input type="radio" name="building_type" value="0"{$item['building_type']==0?' checked':''} title="高层">
+						<input type="radio" name="building_type" value="1"{$item['building_type']==1?' checked':''} title="板楼">
+						<input type="radio" name="building_type" value="2"{$item['building_type']==2?' checked':''} title="塔楼">
+						<input type="radio" name="building_type" value="3"{$item['building_type']==3?' checked':''} title="平房">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">装修情况</label>
+					<div class="layui-input-block">
+						<input type="radio" name="decoration" value="0"{$item['decoration']==0?' checked':''} title="毛坯">
+						<input type="radio" name="decoration" value="1"{$item['decoration']==1?' checked':''} title="简装修">
+						<input type="radio" name="decoration" value="2"{$item['decoration']==2?' checked':''} title="中装修">
+						<input type="radio" name="decoration" value="3"{$item['decoration']==3?' checked':''} title="精装修">
+						<input type="radio" name="decoration" value="4"{$item['decoration']==4?' checked':''} title="豪华装修">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">总户数</label>
+					<div class="layui-input-block">
+						<input type="text" name="households" value="{$item['households']}" class="layui-input layui-input-inline" id="households" placeholder="请输入规划户数">
+						<div class="layui-form-mid layui-word-aux">户</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">开盘时间</label>
+					<div class="layui-input-block">
+						 <input type="text" name="open_date" id="open_date" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input layui-input-inline" onclick="layui.laydate({elem: this})" value="{date('Y-m-d',$item['open_date'])}">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">入住时间</label>
+					<div class="layui-input-block">
+						 <input type="text" name="join_date" id="join_date" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input layui-input-inline" onclick="layui.laydate({elem: this})" value="{date('Y-m-d',$item['join_date'])}">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">产权年限</label>
+					<div class="layui-input-block">
+						<input type="text" name="deadline" value="{$item['deadline']}" class="layui-input layui-input-inline" id="deadline" placeholder="请输入产权年限">
+						<div class="layui-form-mid layui-word-aux">年</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">车位数</label>
+					<div class="layui-input-block">
+						<input type="text" name="parking" value="{$item['parking']}" class="layui-input layui-input-inline" id="parking" placeholder="请输入车位数">
+						<div class="layui-form-mid layui-word-aux">个</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">容积率</label>
+					<div class="layui-input-block">
+						<input type="text" name="volume_rate" value="{$item['volume_rate']}" class="layui-input layui-input-inline" id="volume_rate" placeholder="请输入容积率">
+						<div class="layui-form-mid layui-word-aux">%</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">绿化率</label>
+					<div class="layui-input-block">
+						<input type="text" name="green_rate" value="{$item['green_rate']}" class="layui-input layui-input-inline" id="green_rate" placeholder="请输入绿化率">
+						<div class="layui-form-mid layui-word-aux">%</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">物业费</label>
+					<div class="layui-input-block">
+						<input type="text" name="property_costs" value="{$item['property_costs']}" class="layui-input layui-input-inline" id="property_costs" placeholder="请输入物业费">
+						<div class="layui-form-mid layui-word-aux">元/月</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">周边配套</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="supporting_jt" value="1"{$item['supporting'][0]=='1'?' checked':''} title="交通">
+						<input type="checkbox" name="supporting_dt" value="1"{$item['supporting'][1]=='1'?' checked':''} title="地铁">
+						<input type="checkbox" name="supporting_jy" value="1"{$item['supporting'][2]=='1'?' checked':''} title="教育">
+						<input type="checkbox" name="supporting_yh" value="1"{$item['supporting'][3]=='1'?' checked':''} title="银行">
+						<input type="checkbox" name="supporting_gw" value="1"{$item['supporting'][4]=='1'?' checked':''} title="购物">
+						<input type="checkbox" name="supporting_yy" value="1"{$item['supporting'][5]=='1'?' checked':''} title="医院">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">浏览次数</label>
+					<div class="layui-input-block">
+						<input type="text" name="viewnum" value="{$item['viewnum']}" class="layui-input layui-input-inline" id="viewnum" placeholder="请输入浏览次数">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">项目标签</label>
+					<div class="layui-input-block">
+						<input type="text" name="project_tag" id="project_tag" value="{$item['project_tag']}" placeholder="请输入项目标签，多个请用空格分开" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">物业公司</label>
+					<div class="layui-input-block">
+						<input type="text" name="property_company" id="property_company" value="{$item['property_company']}" lay-verify="required" placeholder="请输入物业公司" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">项目介绍</label>
+					<div class="layui-input-block">
+						<textarea name="project_description" lay-verify="content" placeholder="在此输入项目介绍" class="layui-textarea" id="project_description">{$item['project_description']}</textarea>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">推荐理由</label>
+					<div class="layui-input-block" id="recommend">
+						<input type="text" name="recommend[]" value="{$item['recommend'][0]}" placeholder="请输入推荐理由一" class="layui-input"><br>
+						<input type="text" name="recommend[]" value="{$item['recommend'][1]}" placeholder="请输入推荐理由二" class="layui-input"><br>
+						<input type="text" name="recommend[]" value="{$item['recommend'][2]}" placeholder="请输入推荐理由三" class="layui-input"><br>
+						<input type="text" name="recommend[]" value="{$item['recommend'][3]}" placeholder="请输入推荐理由四" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">相册</label>
+					<div class="layui-input-block">
+						<div class="layui-tab layui-tab-card">
+							<ul class="layui-tab-title">
+								<li class="layui-this">效果图</li>
+								<li>位置图</li>
+								<li>实景图</li>
+								<li>配套图</li>
+								<li>样板间</li>
+							</ul>
+							<div class="layui-tab-content">
+								{foreach $item['images_list'] as $k=>$v}
+								<div class="layui-tab-item{if $k==0} layui-show{/if}" id="images{$k}">
+									<input type="file" name="file[]" data-names="images{$k}" data-ulid="images{$k}" lay-type="images" lay-title="上传{if $k==0}效果图{elseif $k==1}位置图{elseif $k==2}实景图{elseif $k==3}位置图{elseif $k==4}配套图{else}
+									样板间{/if}" class="layui-upload-file">
+									<hr>
+									<ul class="images_list" id="images{$k}">
+										{foreach $v as $k1=>$v1}
+										{if $v1}
+										<li>
+											<img src="{$v1}">
+											<a class="cancel_node">删除</a>
+											<input type="hidden" name="images{$k}[]" value="{$v1}">
+										</li>
+										{/if}
+										{/foreach}
+									</ul>
+								</div>
+								{/foreach}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="*">保存</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+	.c1{ color:#F60;}
+</style>
+<script type="text/javascript" src="/public/admin/js/area.js"></script>
+<script>
+var form;
+var areaData = Area;
+layui.use(['form', 'layedit', 'laydate'], function(){
+	form = layui.form()
+	,layer = layui.layer
+	,layedit = layui.layedit
+	,laydate = layui.laydate;
+	loadProvince(['{$item.province}','{$item.city}','{$item.area}']);
+
+	/**
+	 * 编辑器初始化
+	 */
+	var editIndex = layedit.build('project_description', {
+		tool: ['strong', 'italic', 'underline', 'del', '|', 'left', 'center', 'right', '|', 'link', 'unlink', 'image'],
+		uploadImage: {
+			url: "/admin/file/upload",
+			type: "post"
+		}
+	});
+
+
+	//监听提交
+	form.on('submit(demo1)', function(data){
+		layer.alert(JSON.stringify(data.field), {
+		title: '最终的提交信息'
+		})
+		return false;
+	});
+});
+//加载省数据
+function loadProvince(d_arr) {
+    var proHtml = '';
+    for (var i = 0; i < areaData.length; i++) {
+    	proHtml += '<option value="' + areaData[i].provinceName + '|' + areaData[i].provinceCode + '_' + areaData[i].mallCityList.length + '_' + i + '"'+(d_arr[0]==areaData[i].provinceName?' selected':'')+'>' + areaData[i].provinceName + '</option>';
+    }
+    //初始化省数据
+    $('select[name=province]').append(proHtml);
+    if(d_arr[1].length>1){
+    	var cityHtml = '<option value="' + d_arr[1] + '">' + d_arr[1] + '</option>';
+   		$('select[name=city]').html(cityHtml).parent().show();
+    }
+    if(d_arr[2].length>1){
+	    var areaHtml = '<option value="' + d_arr[2] + '">' + d_arr[2] + '</option>';
+	    $('select[name=area]').html(areaHtml).parent().show();
+	}
+    form.render();
+    form.on('select(province)', function(data) {
+        $('select[name=area]').html('<option value="">请选择县/区</option>').parent().hide();
+        var value = data.value.split('|')[1];
+        var d = value.split('_');
+        var code = d[0];
+        var count = d[1];
+        var index = d[2];
+        if (count > 0) {
+            loadCity(areaData[index].mallCityList);
+        } else {
+            $('select[name=city]').parent().hide();
+        }
+    });
+}
+ //加载市数据
+function loadCity(citys) {
+    var cityHtml = '';
+    for (var i = 0; i < citys.length; i++) {
+        cityHtml += '<option value="' + citys[i].cityName + '|' + citys[i].cityCode + '_' + citys[i].mallAreaList.length + '_' + i + '">' + citys[i].cityName + '</option>';
+    }
+    $('select[name=city]').html(cityHtml).parent().show();
+    form.render();
+    form.on('select(city)', function(data) {
+        var value = data.value.split('|')[1];
+        var d = value.split('_');
+        var code = d[0];
+        var count = d[1];
+        var index = d[2];
+        if (count > 0) {
+            loadArea(citys[index].mallAreaList);
+        } else {
+            $('select[name=area]').parent().hide();
+        }
+    });
+}
+ //加载县/区数据
+function loadArea(areas) {
+    var areaHtml = '';
+    for (var i = 0; i < areas.length; i++) {
+        areaHtml += '<option value="' + areas[i].areaName + '|' + areas[i].areaCode + '">' + areas[i].areaName + '</option>';
+    }
+    $('select[name=area]').html(areaHtml).parent().show();
+    form.render();
+    form.on('select(area)', function(data) {
+        //console.log(data);
+    });
+}
+</script>
+{include inc_foot.html}

@@ -1,0 +1,162 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li class=""><a href="{:url('building')}">房源管理</a></li>
+			<li class=""><a href="{:url('building/add',['id'=>$bid])}">{$item_build.project}</a></li>
+			<li class="layui-this">{$id?'更新户型':'添加户型'}</li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+			<form class="layui-form form-container" action="{:url('building/save_house')}" method="post">
+				<input type="hidden" name="id" value="{$id}" id="id">
+				<input type="hidden" name="build_id" value="{$bid}" id="build_id">
+				<div class="layui-form-item">
+					<label class="layui-form-label">项目名称</label>
+					<div class="layui-input-block">
+						<div class="layui-form-mid">{$item_build.project}</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">户型名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="title" id="title" value="{$item['title']}" lay-verify="required" placeholder="请输入户型名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">户型</label>
+					<div class="layui-input-block">
+						<div class="layui-input-inline">
+							<select name="fang">
+								<option value="一房"{$item['fang']=='一房'?' selected':''}>一房</option>
+								<option value="两房"{$item['fang']=='两房'?' selected':''}>两房</option>
+								<option value="三房"{$item['fang']=='三房'?' selected':''}>三房</option>
+								<option value="四房"{$item['fang']=='四房'?' selected':''}>四房</option>
+								<option value="五房"{$item['fang']=='五房'?' selected':''}>五房</option>
+								<option value="六房"{$item['fang']=='六房'?' selected':''}>六房</option>
+								<option value="七房"{$item['fang']=='七房'?' selected':''}>七房</option>
+								<option value="八房"{$item['fang']=='八房'?' selected':''}>八房</option>
+								<option value="九房"{$item['fang']=='九房'?' selected':''}>九房</option>
+								<option value="十房"{$item['fang']=='十房'?' selected':''}>十房</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select name="ting">
+								<option value="零厅"{$item['ting']=='零厅'?' selected':''}>零厅</option>
+								<option value="一厅"{$item['ting']=='一厅'?' selected':''}>一厅</option>
+								<option value="两厅"{$item['ting']=='两厅'?' selected':''}>两厅</option>
+								<option value="三厅"{$item['ting']=='三厅'?' selected':''}>三厅</option>
+								<option value="四厅"{$item['ting']=='四厅'?' selected':''}>四厅</option>
+								<option value="五厅"{$item['ting']=='五厅'?' selected':''}>五厅</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select name="wei">
+								<option value="零卫"{$item['wei']=='零卫'?' selected':''}>零卫</option>
+								<option value="一卫"{$item['wei']=='一卫'?' selected':''}>一卫</option>
+								<option value="两卫"{$item['wei']=='两卫'?' selected':''}>两卫</option>
+								<option value="三卫"{$item['wei']=='三卫'?' selected':''}>三卫</option>
+								<option value="四卫"{$item['wei']=='四卫'?' selected':''}>四卫</option>
+								<option value="五卫"{$item['wei']=='五卫'?' selected':''}>五卫</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">建筑面积</label>
+					<div class="layui-input-block">
+						<input type="text" name="build_area" value="{$item['build_area']}" class="layui-input layui-input-inline" id="build_area" placeholder="请输入建筑面积">
+						<div class="layui-form-mid layui-word-aux">㎡</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">可用面积</label>
+					<div class="layui-input-block">
+						<input type="text" name="reference_area" value="{$item['reference_area']}" class="layui-input layui-input-inline" id="reference_area" placeholder="请输入可用面积">
+						<div class="layui-form-mid layui-word-aux">㎡</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">朝向</label>
+					<div class="layui-input-block">
+						<input type="radio" name="orientation" value="0"{$item['orientation']==0?' checked':''} title="北">
+						<input type="radio" name="orientation" value="1"{$item['orientation']==1?' checked':''} title="东北">
+						<input type="radio" name="orientation" value="2"{$item['orientation']==2?' checked':''} title="东">
+						<input type="radio" name="orientation" value="3"{$item['orientation']==3?' checked':''} title="东南">
+						<input type="radio" name="orientation" value="4"{$item['orientation']==4?' checked':''} title="南">
+						<input type="radio" name="orientation" value="5"{$item['orientation']==5?' checked':''} title="西南">
+						<input type="radio" name="orientation" value="6"{$item['orientation']==6?' checked':''} title="西">
+						<input type="radio" name="orientation" value="7"{$item['orientation']==7?' checked':''} title="西北">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">层高</label>
+					<div class="layui-input-block">
+						<input type="text" name="height" value="{$item['height']}" class="layui-input layui-input-inline" id="height" placeholder="请输入建筑层高">
+						<div class="layui-form-mid layui-word-aux">米</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">热销户型</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="is_hot" lay-skin="switch" lay-text="ON|OFF" lay-filter="switchTest" value="1"{$item['is_hot']==1?' checked':''}>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否在售户型</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="is_sale" lay-skin="switch" lay-text="ON|OFF" lay-filter="switchTest" value="1"{$item['is_sale']==1?' checked':''}>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">户型图</label>
+					<div class="layui-input-block">
+						<input type="text" name="image" value="{$item['image']}" class="layui-input layui-input-inline" id="image" lay-verify="required">
+						<input type="file" name="file" data-for="image" lay-title="上传户型图" class="layui-upload-file">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">标签</label>
+					<div class="layui-input-block">
+						<input type="text" name="feature" id="feature" value="{$item['feature']}" lay-verify="required" placeholder="多个标签请以空格隔开" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">户型介绍</label>
+					<div class="layui-input-block">
+						<textarea name="detail" lay-verify="content" placeholder="在此输入户型介绍" class="layui-textarea" id="detail">{$item['detail']}</textarea>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="*">保存</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+layui.use(['form', 'layedit', 'laydate'], function(){
+	form = layui.form()
+	,layer = layui.layer
+	,layedit = layui.layedit
+	,laydate = layui.laydate;
+
+	/**
+	 * 编辑器初始化
+	 */
+	var editIndex = layedit.build('detail', {
+		tool: ['strong', 'italic', 'underline', 'del', '|', 'left', 'center', 'right', '|', 'link', 'unlink', 'image'],
+		uploadImage: {
+			url: "/admin/file/upload",
+			type: "post"
+		}
+	});
+
+});
+</script>
+{include inc_foot.html}

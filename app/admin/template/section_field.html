@@ -1,0 +1,163 @@
+﻿{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li class=""><a href="{:url('section')}">栏目管理</a></li>
+			<li class=""><a href="{:url('section/add')}">添加栏目</a></li>
+			<li class="layui-this">{$sec_item.name}字段设置</li>
+		</ul>
+		<style>
+		#field_list{float: left; width: 250px; background: #EEE; float: left;}
+		#field_list strong{ background: #666; color: #FFF; padding: 10px; display:block;}
+		#field_list strong i{padding-left: 10px; font-size: 12px; font-weight: normal; color: #CCC;}
+		#field_list ul li,#field_list ol li{ padding: 10px; cursor: pointer; position: relative;}
+		#field_list ul li i,#field_list ol li i{ padding-left:6px; color:#666;}
+		#field_list ul li:hover,#field_list ol li:hover{ background: #DEDEDE;}
+		#field_list ul li.on{ background: #CCC;}
+		#field_list ul li.add{ background: #1AA194; color: #FFF; text-align: center;}
+		#field_list ul li.add i{font-size:13px; color: #FFF;}
+		#field_list ul li em{ position: absolute; right: 3px;top: 3px;  width: 12px; height: 12px; line-height: 12px; background: #F00; color: #FFF; text-align:center; border-radius: 3px; display: none;}
+		#field_list ul li a{ position: absolute; right: 3px; bottom: 3px;  width: 12px; height: 12px; line-height: 12px; background: #080; color: #FFF; text-align:center; border-radius: 3px; display: none;}
+		#field_list ul li:hover em{ display: block;}
+		#field_list ul li:hover a{ display: block;}
+		</style>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show" id="field_list">
+				<strong>{$sec_item.name}<i>{$sec_item.ename}</i></strong>
+				<ol>
+					<li>自动编号<i>id</i></li>
+					<li>分类编号<i>pid</i></li>
+					<li>是否禁用<i>is_pass</i></li>
+					<li>是否推荐<i>is_best</i></li>
+					<li>添加时间<i>add_time</i></li>
+				</ol>
+				<ul>
+					{foreach $list as $k=>$v}
+					<li title="点击修改{$v.name}字段" data-id="{$v.id}"{if $id==$v['id']} class="on"{/if}>
+						{$v.name}
+						<i>{$v.field_name}</i>
+						<em data-url="{:url('section/field_del',['pid'=>$pid,'id'=>$v['id']])}" class="ajax-delete" title="确定要删除字段{$v.name}？">×</em>
+						<a href="{:url('section/field_move',['pid'=>$pid,'id'=>$v['id']])}" title="向下移动">∨</a>
+					</li>
+					{/foreach}
+					<li data-id="0" class="add"><i class="layui-icon">&#xe61f;</i> 增加新字段</li>
+				</ul>
+			</div>
+			<div class="layui-tab-item layui-show" style=" float: left; width: 60%;">
+				<form id="layui-form form-container" class="layui-form form-container" action="{:url('section/field_save')}" method="post">
+					<input type="hidden" name="pid" value="{$pid}">
+					<input type="hidden" name="id" value="{$id}">
+					<div class="layui-form-item">
+						<label class="layui-form-label">字段名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="name" value="{$item.name}" required  lay-verify="required" placeholder="请输入字段名称，确定后不可修改" class="layui-input" id="cn_name"{$id?' disabled':''}>
+							<input type="hidden" name="field_name" value="{$item.field_name}" id="en_name">
+							<p>{$item.field_name}</p>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">数据类型</label>
+						<div class="layui-input-block">
+							<select id="field_type" lay-filter="test" name="field_type" lay-verify="required"{$id?' disabled':''}>
+								<option value="varchar" lang="50" title="长度是指最多存入的字符数"{if $item['field_type']=='varchar'} selected{/if}>文本字段</option>
+								<option value="tinyint" lang="1" title="用于存取是否或其它短的数字"{if $item['field_type']=='tinyint'} selected{/if}>短数字</option>
+								<option value="float" lang="5,4" title="用于存取货币类型的（8,2）是指总宽度是5位数，其中还有2位是小数"{if $item['field_type']=='float'} selected{/if}>货币类型</option>
+								<option value="int" lang="3"{if $item['field_type']=='int'} selected{/if}>数字</option>
+								<option value="text" lang="65535" title="可以存最大长度65535个字元"{if $item['field_type']=='text'} selected{/if}>长文本</option>
+								<option value="MediumText" lang="16777215" title="可以存最大长度16777215个字元"{if $item['field_type']=='MediumText'} selected{/if}>超长文本</option>
+								<option value="LongText" lang="4294967295" title="可以存最大长度4294967295个字元"{if $item['field_type']=='LongText'} selected{/if}>最长文本</option>
+								<option value="datetime" lang="8"{if $item['field_type']=='datetime'} selected{/if}>日期</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">长度</label>
+						<div class="layui-input-block">
+							<input type="text" id="field_long" name="field_long" value="50" placeholder="请填入数据长度，确定后不可修改" class="layui-input"{$id?' disabled':''}>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">约束类型</label>
+						<div class="layui-input-block">
+							<select name="type">
+								<option value="input"{if $item['type']=='input'} selected{/if}>单行文本</option>
+								<option value="hidden"{if $item['type']=='hidden'} selected{/if}>隐藏域</option>
+								<option value="switch"{if $item['type']=='switch'} selected{/if}>开关</option>
+								<option value="inputnumber"{if $item['type']=='inputnumber'} selected{/if}>单行数字</option>
+								<option value="textarea"{if $item['type']=='textarea'} selected{/if}>多行文本</option>
+								<option value="checkbox"{if $item['type']=='checkbox'} selected{/if}>多选框</option>
+								<option value="radio"{if $item['type']=='radio'} selected{/if}>单选框</option>
+								<option value="select"{if $item['type']=='select'} selected{/if}>下拉列表</option>
+								<option value="upload"{if $item['type']=='upload'} selected{/if}>文件上传</option>
+								<option value="photo"{if $item['type']=='photo'} selected{/if}>图片上传</option>
+								<option value="addtime"{if $item['type']=='addtime'} selected{/if}>日期格式</option>
+								<option value="editor"{if $item['type']=='editor'} selected{/if}>内容编辑器</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">选项</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="is_must" value="1" title="必填项"{if $item['is_must']} checked{/if}>
+							<input type="checkbox" name="is_show" value="1" title="列表显示"{if $item['is_show']} checked{/if}>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">默认值</label>
+						<div class="layui-input-block">
+							<textarea name="default" class="layui-textarea" style="height:200px;">{$item.default}</textarea>
+							每行可存储一个值
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="*">保存</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/public/admin/js/pinyin.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('#field_list ol li').on('click',function(o){
+			layer.msg('此类别不可修改');
+		});
+		$('#field_list ul li').on('click',function(o){
+			var id=$(this).data('id');
+			var url = '{:url('section/field',['pid'=>$pid,'id'=>'____'])}';
+			url = url.replace('____',id);
+			location = url;
+		});
+		$('#field_list ul em').on('click',function(event){
+			event.stopPropagation();
+		});
+		$('#cn_name').bind('keyup keydown blur',function(){
+			$('#en_name').val(pinyin.go($('#cn_name').val(),1));
+		});
+	
+	});
+
+
+
+</script>
+<script type="text/javascript">
+ $lang=""
+layui.use('form', function(){
+  var form = layui.form();
+ form.on('select(test)', function(data){
+ 	  //console.log(data.elem[data.elem.selectedIndex].lang);
+ 	  $lang=data.elem[data.elem.selectedIndex].lang;
+ 		$("#field_long").val($lang);
+ });
+});
+
+
+
+</script>
+{include inc_foot.html}

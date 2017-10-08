@@ -1,0 +1,40 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li class="layui-this">栏目管理</li>
+			<li><a href="{:url('section/add',['id'=>0])}">添加栏目</a></li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<table class="layui-table">
+					<thead>
+					<tr>
+						<th style="width: 30px;">ID</th>
+						<th>栏目名称</th>
+						<th>表名</th>
+						<th>操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $list as $k=>$v}
+					<tr>
+						<td>{$v.id}</td>
+						<td>{$v.name}</td>
+						<td>{$v.ename}</td>
+						<td>
+							<a href="{:url('section/field',['pid'=>$v['id']])}" class="layui-btn layui-btn-mini">设置字段</a>
+							<a href="{:url('section/add',['id'=>$v['id']])}" class="layui-btn layui-btn-normal layui-btn-mini">编辑</a>
+							<a href="#" data-url="{:url('section/delete',['id'=>$v['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete" title="确定要删除栏目{$v.name}？">删除</a>
+						</td>
+					</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{include inc_foot.html}

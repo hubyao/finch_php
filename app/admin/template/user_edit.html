@@ -1,0 +1,93 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li><a href="{:url('user/index')}">会员中心</a></li>
+			<li class="layui-this">{$edit?'修改会员':'添加会员'}</li>
+			<li><a href="{:url('user/user_level')}">会员等级管理</a></li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+			<form class="layui-form form-container" action="{:url('user/save')}" method="post">
+				<input type="hidden" name="id" value="{$item.id}" id="id">
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">登陆手机</label>
+					<div class="layui-input-block">
+						<input type="text" name="mobile" value="{$item['mobile']}" required lay-verify="required" placeholder="请输入手机号码" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">密码</label>
+					<div class="layui-input-block">
+						<input type="password" name="password" value="" placeholder="请输入登陆密码，不修改请留空" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">支付密码</label>
+					<div class="layui-input-block">
+						<input type="password" name="pincode" value="" placeholder="请输入支付密码，不修改请留空" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">用户名</label>
+					<div class="layui-input-block">
+						<input type="text" name="username" value="{$item['username']}" required lay-verify="required" placeholder="请输入会员登陆名" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">邮箱</label>
+					<div class="layui-input-block">
+						<input type="text" name="email" value="{$item['email']}" placeholder="请输入邮箱地址" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">会员等级:</label>
+					<div class="layui-input-block">
+						<select name="user_level">
+							{foreach $list as $k => $v}
+							<option value="{$v.id}">{$v.name}</option>
+							{/foreach}
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">状态</label>
+					<div class="layui-input-block">
+						<input type="checkbox" value="1" name="status" lay-skin="switch"{if $item['status']} checked{/if}>
+					</div>
+				</div>
+				{if $item['create_time']}
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册时间</label>
+					<div class="layui-input-block">
+						<input type="text" value="<?= date('Y-m-d H:i:s',$item['create_time'])?date('Y-m-d H:i:s',$item['create_time']):"" ?>" disabled class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">最后登陆</label>
+					<div class="layui-input-block">
+						<input type="text" value="<?= date('Y-m-d H:i:s',$item['last_login_time'])?date('Y-m-d H:i:s',$item['last_login_time']):"" ?>" disabled class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">IP地址</label>
+					<div class="layui-input-block">
+						<input type="text" value="{$item.last_login_ip}" disabled class="layui-input">
+					</div>
+				</div>
+				{/if}
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button  class="layui-btn" lay-submit lay-filter="*" >保存</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+{include inc_foot.html}

@@ -1,0 +1,45 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li class="layui-this">管理员中心</li>
+			<li><a href="{:url('useradmin/add')}">添加管理员</a></li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<table class="layui-table">
+					<thead>
+					<tr>
+						<th class='tc' nowrap><a href="#" name="top_checkbox" data-for="ids">选择</a></th>
+						<th>管理员名称</th>
+						<th>状态</th>
+						<th>创建时间</th>
+						<th>最后登陆时间</th>
+						<th>IP</th>
+						<th class="tc">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $list as $k=>$v}
+					<tr>
+						<td align="center"><input type="checkbox" name="ids" value="{$v.id}" title="选择"></td>
+						<td>{$v.username}</td>
+						<td>{$v.status}</td>
+						<td>{date('Y-m-d',$v['create_time'])}</td>
+						<td>{date('Y-m-d',$v['last_login_time'])}</td>
+						<td>{$v['last_login_ip']}</td>
+						<td nowrap>
+							<a href="{:url('useradmin/add',['id'=>$v['id']])}" class="layui-btn layui-btn-mini edit_category">修改</a>
+							<a href="#" data-url="{:url('useradmin/delete',['id'=>$v['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+						</td>
+					</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{include inc_foot.html}

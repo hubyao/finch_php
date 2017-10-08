@@ -1,0 +1,135 @@
+{include inc_top.html}
+{include inc_left.html}
+<div class="layui-body">
+	<!--tab标签-->
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li class="layui-this">{$list_section['name']}管理</li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<form class="layui-form layui-form-pane" action="{:url('content/index',['pid'=>$pid])}" method="get">
+					{if $tree}
+					<div class="layui-inline">
+						<select name="fid" id="fid">
+							<option value=""></option>
+							{foreach $tree as $k=>$v}
+							<option value="{$v.id}">{$v.html} {$v.name}</option>
+							{/foreach}
+						</select>
+					</div>
+					{/if}
+					<div class="layui-input-inline">
+						<input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词" class="layui-input">
+					</div>
+					<div class="layui-inline">
+						<button class="layui-btn">搜索</button>
+					</div>
+					<div class="rightBtn">
+						<a href="{:url('content/add',['pid'=>$pid])}" class="layui-btn layui-btn-small layui-btn-normal ajax-link">添加新内容</a>
+					</div>
+				</form>
+				<hr>
+				<table class="layui-table">
+					<thead>
+					<tr>
+						<th class='tc' nowrap><a href="#" name="top_checkbox" data-for="ids">选择</a></th>
+						<th>分类</th>
+						{foreach $fieldTitle as $k=>$v}
+						<th>{$v}</th>
+						{/foreach}
+						<th class='tc' nowrap>日期</th>
+						<th class='tc' nowrap>排序</th>
+						<th class='tc' nowrap>操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $pagelist as $k=>$v}
+					<tr>
+						<td align="center"><input type="checkbox" name="ids" value="{$v.id}" title="选择"></td>
+						<td>
+							<a href="{:url('content/index',['pid'=>$pid])}">{$list_section['name']}</a>
+							{foreach $v['category'] as $k1=>$v1}
+							{if $v1['fid']}
+							> <a href="{:url('content/index',['pid'=>$pid,'fid'=>$v1['fid']])}">{$v1.name}</a>
+							{/if}
+						{/foreach}</td>
+						{foreach $fielden as $k1=>$v1}
+						<td>{$v[$v1]}</td>
+						{/foreach}
+						<td nowrap>{date('Y-m-d',$v['add_time'])}</td>
+						<td align="right" nowrap>
+							<a href="#" data-url="{:url('content/content_move',['action'=>'down','pid'=>$pid,'id'=>$v['id']])}" class="layui-btn layui-btn-normal layui-btn-mini ajax-link">向上</a>
+							<a href="#" data-url="{:url('content/content_move',['action'=>'up','pid'=>$pid,'id'=>$v['id']])}" class="layui-btn layui-btn-normal layui-btn-mini ajax-link">向下</a>
+						</td>
+						<td align="right" nowrap>
+							<a href="{:url('content/add',['pid'=>$pid,'id'=>$v['id']])}" class="layui-btn layui-btn-mini edit_category">修改</a>
+							<a href="#" data-url="{:url('content/delete',['pid'=>$pid,'id'=>$v['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+						</td>
+					</tr>
+					{/foreach}
+					</tbody>
+				</table>
+				{if $pageurl}
+				<div id="splitPage"></div>
+				<script type="text/javascript">
+				layui.use(['laypage', 'layer'], function(){
+					var laypage = layui.laypage,
+						layer = layui.layer;
+					laypage({
+						cont: 'splitPage',
+						pages: {$pageurl.max},//总页数
+						curr: {$pageurl.now},//当前页
+						jump: function(obj,first){//点击页码出发的事件
+							if(first!=true){//是否首次进入页面
+								var url = '{$pageurl.url}'.replace('{page}',obj.curr);//把当前页码转为链接URL
+								window.location.href = url;
+							}
+						}
+					});
+				});
+				</script>
+				{/if}
+				<div class="layui-form">
+					{if $tree}
+					<div class="layui-inline">
+						<select name="category" id="new_fid">
+							<option value=""></option>
+							{foreach $tree as $k=>$v}
+							<option value="{$v.id}">{$v.html} {$v.name}</option>
+							{/foreach}
+						</select>
+					</div>
+					<div class="layui-inline">
+						<button class="layui-btn" id="moveTo" data-flag="move" data-url="{:url('content/movedata',['pid'=>$pid])}">移动到...</button>
+					</div>
+					<div class="layui-inline">
+						<button class="layui-btn" id="moveTo" data-flag="copy" data-url="{:url('content/movedata',['pid'=>$pid])}">复制到...</button>
+					</div>
+					{/if}
+				</div>
+				<script type="text/javascript">
+				$(function(){
+					$('body').on('click','#moveTo',function(){
+						var ids = checked_id('ids');
+						var newFid = $('#new_fid').val();
+						var flag = $(this).data('flag');
+						if(ids==''){
+							layer.msg('请选择需要操作的数据');
+							return false;
+						}
+						if(newFid==''){
+							layer.msg('请选择新分类');
+							return false;
+						}
+						var url = $(this).data('url');
+						url += '?flag='+flag+'&ids='+ids+'&newfid='+newFid;
+						location.href=url;
+					});
+				});
+				</script>
+			</div>
+		</div>
+	</div>
+</div>
+{include inc_foot.html}

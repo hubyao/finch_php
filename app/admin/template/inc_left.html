@@ -1,0 +1,35 @@
+	<!--侧边栏-->
+	<div class="layui-side layui-bg-black">
+		<div class="layui-side-scroll">
+			<ul class="layui-nav layui-nav-tree">
+				<li class="layui-nav-item layui-nav-title"><a>网站内容管理</a></li>
+				{foreach $section as $k=>$v}
+				<li class="layui-nav-item">
+					<dl>
+					<dd{if MODULE=='content' && $pid==$v['id']} class="layui-this"{/if}><a href="{:url('content/index',['pid'=>$v['id']])}">{$v.name}</a>
+					{if $v['is_next']}
+					<a href="{:url('content/category',['pid'=>$v['id']])}" class="a_class" title="点击设置{$v.name}分类"><i class="layui-icon">&#xe62a;</i></a>
+					{/if}
+					</dd>
+					</dl>
+				</li>
+				{/foreach}
+				<li class="layui-nav-item layui-nav-itemed"> <a href="javascript:;"><i class="fa fa-gears"></i> 系统配置</a>
+					<dl class="layui-nav-child">
+						<dd{if MODULE=='system'} class="layui-this"{/if}><a href="{:url('system')}"><i class="layui-icon">&#xe614;</i> 站点配置</a> </dd>
+					</dl>
+					<dl class="layui-nav-child">
+						<dd{if MODULE=='section'} class="layui-this"{/if}> <a href="{:url('section')}"><i class="layui-icon">&#xe622;</i> 栏目管理</a> </dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item layui-nav-itemed"> <a href="javascript:;"><i class="fa fa-users"></i> 用户管理</a>
+					<dl class="layui-nav-child">
+						<dd{if MODULE=='user'} class="layui-this"{/if}> <a href="{:url('user/index')}"> 用户中心</a> </dd>
+					</dl>
+					<dl class="layui-nav-child">
+						<dd{if MODULE=='useradmin'} class="layui-this"{/if}> <a href="{:url('useradmin/index')}"> 管理员</a> </dd>
+					</dl>
+				</li>
+			</ul>
+		</div>
+	</div>

@@ -1,0 +1,58 @@
+<?php
+error_reporting(E_ALL || ~E_NOTICE);
+?>
+{include inc_top.html}
+{include inc_left.html}
+
+<div class="layui-body">
+	<div class="layui-tab layui-tab-brief">
+		<ul class="layui-tab-title">
+			<li><a href="{:url('useradmin/index')}">管理员中心</a></li>
+			<li class="layui-this">{$edit?'修改管理员':'添加管理员'}</li>
+			
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+			<form class="layui-form form-container" action="{:url('useradmin/save')}" method="post">
+				<input type="hidden" name="id" value="{$item.id}" id="id">
+				<div class="layui-form-item">
+					<label class="layui-form-label">登陆名</label>
+					<div class="layui-input-block">
+						<input type="text" name="username" value="{$item['username']}" required lay-verify="required" placeholder="请输入管理员登陆名" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">密码</label>
+					<div class="layui-input-block">
+						<input type="password" name="password" value="" placeholder="请输入登陆密码，不修改请留空" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">状态</label>
+					<div class="layui-input-block">
+						<input type="checkbox" value="1" name="status" lay-skin="switch"{if $item['status']} checked{/if}>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">系统权限</label>
+					<div class="layui-input-block" id="user_power">
+						<input type="checkbox" name="user_power[]" value="-1" title="系统管理"<?=in_array("-1",$item['user_power'])?' checked':''?>>
+						<input type="checkbox" name="user_power[]" value="-2" title="栏目管理"<?=in_array("-2",$item['user_power'])?' checked':''?>>
+						<input type="checkbox" name="user_power[]" value="-3" title="管理员管理"<?=in_array("-3",$item['user_power'])?' checked':''?>>
+						<input type="checkbox" name="user_power[]" value="-4" title="用户中心管理"<?=in_array("-4",$item['user_power'])?' checked':''?>>
+						{foreach $section as $k=>$v}
+							<input type="checkbox" name="user_power[]" value="{$v.id}" title="{$v.name}管理"<?=in_array($v['id'],$item['user_power'])?' checked':''?>>
+						{/foreach}
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="*">保存</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{include inc_foot.html}
